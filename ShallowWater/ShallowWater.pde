@@ -2,7 +2,7 @@
 
 String projectTitle = "Shallow Water";
 
-boolean play = false;
+boolean play = true;
 
 //Create Window
 void setup() {
@@ -15,7 +15,7 @@ void setup() {
     hm[i] = 0;
     uhm[i] = 0;
   }
-  uh[1] = 3;
+  //uh[1] = 3;
   //for (int i = 2*n/5; i < 3*n/5; i++) h[i] = 3;
 }
 
@@ -48,10 +48,10 @@ void waveEquation(float dt){
     uhm[i]*uhm[i]/hm[i] - 0.5*g*hm[i]*hm[i])/dx;
   }
   // boundary conditions (Free)
-  h[0] = h[n-2];
-  uh[0] = uh[n-2];
-  h[n-1] = h[1];
-  uh[n-1] = uh[1];
+  h[0] = h[1];
+  h[h.length-1] = h[h.length-2];
+  uh[0] = uh[1];
+  uh[uh.length-1] = -uh[uh.length-2];
 }
 
 //Draw the scene: one sphere per mass, one line connecting each pair
@@ -62,28 +62,29 @@ void draw() {
   directionalLight(128, 128, 128, 0, 1, 0);
   lightFalloff(1, 0, 0);
   lightSpecular(0, 0, 0);
-  if (play) waveEquation(.002);
-  fill(0, 0, 255);
+  if (play) waveEquation(.01);
+  fill(87, 200, 255, 200);
   beginShape(QUADS);
   for (int i = 0; i < n-1; i++){
-    vertex(0.5+600/n*i, 600, 0);
-    vertex(0.5+600/n*i, 600-h[i]*100, 0); //<>//
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, 0);
-    vertex(0.5+600/n*(i+0.5), 600, 0);
-    vertex(0.5+600/n*(i+0.5), 600, 0);
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, 0);
-    vertex(0.5+600/n*(i+1), 600-h[i+1]*100, 0);
-    vertex(0.5+600/n*(i+1), 600, 0);
+    vertex(600.0/(n-1)*i, 600, 0);
+    vertex(600.0/(n-1)*i, 600-h[i]*70, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600, 0);
     
-    vertex(0.5+600/n*i, 600-h[i]*100, 0);
-    vertex(0.5+600/n*i, 600-h[i]*100, -200);
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, -200);    
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, 0);
+    vertex(600.0/(n-1)*(i+1), 600-h[i+1]*70, 0);
+    vertex(600.0/(n-1)*(i+1), 600, 0); 
+    
+    vertex(600.0/(n-1)*i, 600-h[i]*70, 0);
+    vertex(600.0/(n-1)*i, 600-h[i]*70, -200);
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, -200);   
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, 0);
 
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, 0);
-    vertex(0.5+600/n*(i+0.5), 600-h[i]*100, -200);
-    vertex(0.5+600/n*(i+1), 600-h[i+1]*100, -200);
-    vertex(0.5+600/n*(i+1), 600-h[i+1]*100, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, 0);
+    vertex(600.0/(n-1)*(i+0.5), 600-h[i]*70, -200);
+    vertex(600.0/(n-1)*(i+1), 600-h[i+1]*70, -200);
+    vertex(600.0/(n-1)*(i+1), 600-h[i+1]*70, 0);
 
   }
   endShape();
@@ -94,5 +95,5 @@ void draw() {
 }
 
 void keyPressed() {
-  if (keyCode == ENTER) play = true;
+  if (keyCode == ENTER) uh[25] = 3;
 }

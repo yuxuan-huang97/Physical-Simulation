@@ -1,4 +1,5 @@
-//Shallow Water Simulation
+// 1D Shallow Water Simulation 
+// by Yuxuan Huang
 
 String projectTitle = "Shallow Water";
 
